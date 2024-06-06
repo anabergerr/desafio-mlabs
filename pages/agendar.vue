@@ -2,7 +2,6 @@
   <Header />
   <main class="container">
     <section class="left-column">
-      <h2>Coluna Esquerda</h2>
       <div class="card-container">
         <card :spanText="'Rede Social'">
           <div>
@@ -33,19 +32,21 @@
 
     </section>
     <section class="right-column">
-      <card :spanText="'Visualizacao do Post'">
+      <card :spanText="'Visualizacao do'">
         <div>
           rede social
         </div>
       </card>
     </section>
   </main>
+  <FooterAgendar />
 </template>
 
 <style scoped>
 .container {
   display: flex;
   justify-content: space-between;
+  margin-top: 50px;
 }
 
 .left-column,
@@ -60,6 +61,7 @@
 .card {
   flex: 1;
 }
+
 
 /* Estilo para telas menores, como smartphones */
 @media (max-width: 768px) {
