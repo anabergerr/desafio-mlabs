@@ -1,17 +1,16 @@
 <template>
-    <Header 
-      profilePicture="url-da-imagem-de-perfil.jpg" 
-      logo="url-do-logo.png"
-    />
-    <main class="content">
-      <img src="/assets/img/vetor-posts.png" alt="Imagem Central" class="center-image"/>
-      <button class="schedule-button">Agendar Post</button>
-    </main>
+  <Header profilePicture="url-da-imagem-de-perfil.jpg" logo="url-do-logo.png" />
+  <main class="content">
+    <img src="/assets/img/vetor-posts.png" alt="Imagem Central" class="center-image" />
+    <button class="schedule-button">Agendar Post</button>
+  </main>
 </template>
 
 
 <style scoped>
-html, body, #app {
+html,
+body,
+#app {
   height: 100%;
   margin: 0;
 }
@@ -21,12 +20,14 @@ html, body, #app {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: calc(100vh - 60px); /* Ajuste a altura conforme a altura do Header */
+  height: calc(100vh - 60px);
+  /* Ajuste a altura conforme a altura do Header */
   text-align: center;
 }
 
 .center-image {
-  width: 300px; /* Ajuste o tamanho conforme necessário */
+  width: 300px;
+  /* Ajuste o tamanho conforme necessário */
   height: auto;
   margin-bottom: 20px;
 }

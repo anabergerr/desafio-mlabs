@@ -9,22 +9,6 @@
   </header>
 </template>
 
-<script>
-export default {
-  name: 'Header',
-  props: {
-    profilePicture: {
-      type: String,
-      required: true
-    },
-    logo: {
-      type: String,
-      required: true
-    }
-  }
-}
-</script>
-
 <style scoped>
 .header {
   display: flex;
