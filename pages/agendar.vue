@@ -232,7 +232,7 @@
 
   /* Garante que a coluna direita cresça para ocupar o espaço restante */
   .container .right-column {
-    flex-grow: 1;
+    display: none;
   }
 
   .container .card-container-top {
@@ -298,56 +298,65 @@
   .card-upload {
     margin-top: 15px;
     /* Reduz a margem superior do card-upload */
+    position: relative;
+    /* Define a card-upload como um container para posicionamento */
   }
 
-  .content-upload-image {
+  .card-upload .content-upload-image {
     padding: 15px;
-    /* Ajusta o padding do conteúdo de upload */
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  .border-upload {
-    width: 100%;
-    height: 150px;
-    /* Ajusta a altura do container de upload */
+    /* Centraliza o conteúdo horizontalmente */
     border: 1px dashed #ccc;
     /* Cor da borda do upload */
+    height: 100px;
+    /* Ajusta a altura do container de upload */
+    background-color: #f0f0f0;
+    /* Adiciona cor de fundo ao container */
+  }
+
+  .card-upload .border-upload {
+    width: 100%;
+    height: 100px;
+    border: 1px dashed #ccc;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+    /* Centraliza o conteúdo verticalmente */
     text-align: center;
     cursor: pointer;
-    /* Define o cursor como ponteiro para indicar que é clicável */
   }
 
-  #file {
+  /* Remover o ícone e texto do border-upload */
+  .card-upload .border-upload img,
+  .card-upload .border-upload p {
     display: none;
   }
 
-  .input-label-file {
-    width: 100%;
-    /* Define a largura do botão de upload para 100% */
+  .card-upload .input-label-file {
+    width: 150px;
+    /* Ajusta a largura do botão */
     height: 40px;
-    /* Ajusta a altura do botão de upload */
     color: #007bff;
-    /* Cor do botão de upload */
     border: 1px solid #007bff;
-    /* Cor da borda do botão de upload */
     margin-top: 15px;
-    /* Ajusta a margem superior do botão de upload */
     cursor: pointer;
-    /* Define o cursor como ponteiro para indicar que é clicável */
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 4px;
-    /* Adiciona cantos arredondados ao botão */
     font-weight: bold;
-    /* Define a fonte do botão como negrito */
+    background-color: white;
+    /* Define a cor de fundo do botão */
+    transition: background-color 0.3s ease;
+  }
+
+  .card-upload .input-label-file:hover {
+    background-color: #0056b3;
+    color: white;
   }
 
   .waiting-content {
