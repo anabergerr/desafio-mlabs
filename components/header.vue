@@ -1,10 +1,11 @@
 <template>
   <header class="header">
-    <div class="logo">
-      <img src="/assets/img/logo.png" alt="Logo" />
+    <div class="logo-container">
+      <img src="/assets/img/logo.png" alt="Logo" class="logo" />
     </div>
-    <div class="profile-pic">
-      <img src="/assets/img/avatar.png" alt="Profile Picture" />
+    <div class="profile-container">
+      <img src="/assets/img/avatar.png" alt="Profile Picture" class="profile-pic" />
+      <span class="profile-name">Aselmo Carlos</span>
     </div>
   </header>
 </template>
@@ -13,25 +14,41 @@
 .header {
   display: flex;
   justify-content: space-between;
+  /* Espaça os elementos uniformemente */
   align-items: center;
-  padding: 10px 20px;
-  background-color: #f8f9fa;
+  /* Alinha os elementos verticalmente ao meio */
+  background-color: #fff;
+  height: 100px;
+  /* Ajuste conforme necessário para a altura desejada */
+  padding: 0 5px;
+  /* Espaçamento horizontal opcional */
+}
+
+.logo-container,
+.profile-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 50px;
 }
 
 .profile-pic {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  overflow: hidden;
+  margin-right: 10px;
 }
 
-.profile-pic img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.profile-name {
+  font-size: 16px;
+  font-weight: bold;
 }
 
-.logo img {
-  height: 50px;
+@media (max-width: 768px) {
+  .logo-container {
+    opacity: 0;
+  }
 }
 </style>
