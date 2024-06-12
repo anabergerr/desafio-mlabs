@@ -1,3 +1,62 @@
+<script setup lang="ts">
+
+import { ref } from 'vue';
+
+
+const socialLinks = [
+  {
+    name: 'Instagram',
+    icon: 'instagram',
+    enabled: true,
+  },
+  {
+    name: 'Linkedin',
+    icon: 'linkedin',
+    enabled: true,
+  },
+  {
+    name: 'Youtube',
+    icon: 'youtube',
+    enabled: false,
+  },
+  {
+    name: 'Pinterest',
+    icon: 'pinterest',
+    enabled: false,
+  },
+  {
+    name: 'Twitter',
+    icon: 'twitter',
+    enabled: false,
+  },
+  {
+    name: 'Facebook',
+    icon: 'facebook',
+    enabled: false,
+  },
+];
+
+const selectedLink = ref<number | null>(null)
+const inputValueData = ref('');
+const inputValueHours = ref('');
+const router = useRouter();
+
+
+const selectLink = (index: number) => {
+  selectedLink.value = index
+}
+
+
+const agendar = () => {
+  alert('Agendamento realizado com sucesso!');
+  router.push('/agendamentos');
+};
+
+
+</script>
+
+
+
 <template>
   <div class="principal">
     <main class="container">
@@ -6,15 +65,17 @@
           <card class="card card-social" :spanText="'Redes Sociais'">
             <div>
               <div id="icons">
-                <a class="link-social" v-for="link in socialLinks" :key="link.name" :href="link.url" target="blank">
+                <button v-for="(link, index) in socialLinks" :key="link.name" class="link-social"
+                  :class="{ active: selectedLink === index }" :disabled="!link.enabled" @click="selectLink(index)"
+                  :target="link.enabled ? 'blank' : ''">
                   <font-awesome-icon class="icon-social" :icon="['fab', link.icon]" />
-                </a>
+                </button>
               </div>
             </div>
           </card>
-          <card class="card card-data" :spanText="'Data de publicacao'">
-            <div>
-              data
+          <card class="card card-data" :spanText="'Data de publicação'">
+            <div class="data-input">
+
             </div>
           </card>
         </div>
@@ -50,12 +111,19 @@
       </section>
     </main>
   </div>
-  <FooterAgendar />
+  <footer class="footer">
+    <div class="footer-buttons">
+      <button class="button cancel-button">Cancelar</button>
+      <button class="button draft-button">Salvar Rascunho</button>
+      <button :disabled="inputValueHours.trim() === '' || inputValueData.trim() === '' || selectedLink === null"
+        class="button schedule-button" @click="agendar">Agendar</button>
+    </div>
+  </footer>
 </template>
 
 <style scoped>
 .container {
-  /* margin: 50px auto; */
+  margin: 50px auto;
 
   display: flex;
   flex-wrap: wrap;
@@ -79,7 +147,6 @@
   margin-top: 20px;
 }
 
-/* Garante que a coluna direita cresça para ocupar o espaço restante */
 .container .right-column {
   flex-grow: 1;
 }
@@ -105,16 +172,28 @@
 .link-social {
   width: 33px;
   height: 33px;
-  border: 1px solid black;
+  border: 1px solid #ccc;
   border-radius: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: background-color 0.3s ease;
+  background-color: transparent;
+  cursor: pointer;
 }
 
-.icon-social {
-  color: black;
-  width: 16px;
+.link-social.active {
+  background-color: orange;
+}
+
+.link-social:hover .icon-social {
+  color: rgb(180, 117, 0);
+}
+
+.link-social.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .card-post {
@@ -131,7 +210,6 @@
 .text-aterea-form textarea {
   width: 100%;
   border: 1px solid #000;
-  /* Cor da borda do textarea */
   border-radius: 4px;
   padding: 15px;
   cursor: text;
@@ -195,11 +273,57 @@
   width: 649px;
 }
 
+.footer {
+  background-color: #FFFFFF;
+  padding: 20px;
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  width: 100%;
+}
+
+.footer-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.button {
+  margin-left: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.cancel-button {
+  background-color: transparent;
+  color: #333;
+}
+
+.draft-button {
+  background-color: #fff;
+  color: #007bff;
+}
+
+.schedule-button {
+  background-color: #007bff;
+  color: #fff;
+  margin-right: 40px;
+}
+
+.schedule-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #ccc;
+  color: #666;
+
+}
+
 
 @media (max-width: 768px) {
   .container {
-    /* margin: 50px auto; */
-
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -210,27 +334,22 @@
   .card {
     background-color: white;
     border-radius: 8px;
-    /* Adiciona cantos arredondados às cards */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    /* Adiciona uma sombra sutil para destacar as cards */
     overflow: hidden;
-    /* Remove qualquer conteúdo que ultrapasse os limites da card */
   }
 
   .container .left-column,
   .container .right-column {
     width: 100%;
-    /* Define a largura das colunas para 100% */
     padding: 20px;
-    /* Ajusta o padding das colunas para o mobile */
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     margin-top: 10px;
-    /* Reduz a margem superior entre as colunas */
+
   }
 
-  /* Garante que a coluna direita cresça para ocupar o espaço restante */
+
   .container .right-column {
     display: none;
   }
@@ -239,15 +358,12 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    /* Alinha os cards verticalmente no mobile */
     gap: 15px;
-    /* Adiciona espaço entre os cards */
   }
 
   .container .card-social,
   .card-data {
     width: 100%;
-    /* Define a largura dos cards para 100% */
   }
 
   #icons {
@@ -273,12 +389,10 @@
 
   .card-post {
     margin-top: 15px;
-    /* Reduz a margem superior do card-post */
   }
 
   .text-aterea-form {
     padding: 15px;
-    /* Ajusta o padding do formulário */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -287,19 +401,15 @@
   .text-aterea-form textarea {
     width: 100%;
     border: 1px solid #000;
-    /* Cor da borda do textarea */
     border-radius: 4px;
     padding: 10px;
     cursor: text;
     resize: vertical;
-    /* Permite redimensionar o textarea apenas verticalmente */
   }
 
   .card-upload {
     margin-top: 15px;
-    /* Reduz a margem superior do card-upload */
     position: relative;
-    /* Define a card-upload como um container para posicionamento */
   }
 
   .card-upload .content-upload-image {
@@ -307,13 +417,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Centraliza o conteúdo horizontalmente */
     border: 1px dashed #ccc;
-    /* Cor da borda do upload */
     height: 100px;
-    /* Ajusta a altura do container de upload */
     background-color: #f0f0f0;
-    /* Adiciona cor de fundo ao container */
   }
 
   .card-upload .border-upload {
@@ -325,12 +431,10 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    /* Centraliza o conteúdo verticalmente */
     text-align: center;
     cursor: pointer;
   }
 
-  /* Remover o ícone e texto do border-upload */
   .card-upload .border-upload img,
   .card-upload .border-upload p {
     display: none;
@@ -338,7 +442,6 @@
 
   .card-upload .input-label-file {
     width: 150px;
-    /* Ajusta a largura do botão */
     height: 40px;
     color: #007bff;
     border: 1px solid #007bff;
@@ -350,7 +453,6 @@
     border-radius: 4px;
     font-weight: bold;
     background-color: white;
-    /* Define a cor de fundo do botão */
     transition: background-color 0.3s ease;
   }
 
@@ -362,7 +464,6 @@
   .waiting-content {
     text-align: center;
     padding: 20px;
-    /* Adiciona padding para melhor espaçamento */
   }
 
   .waiting-content p {
@@ -374,10 +475,8 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    /* Define a largura da card-text para 100% */
   }
 
-  /* Estilos para a área do card-text no mobile */
   .card-text .waiting-content {
     padding: 20px;
     display: flex;
@@ -388,98 +487,59 @@
   .card-text .waiting-content img {
     width: 100%;
     max-width: 300px;
-    /* Define uma largura máxima para a imagem */
     height: auto;
     margin-top: 20px;
   }
 
-  /* Estilos para o cabeçalho da card */
   .card h3 {
     padding: 15px;
     background-color: #f0f0f0;
     margin: 0;
-    /* Remove a margem padrão do h3 */
     font-weight: bold;
   }
 
-  /* Estilos para o conteúdo da card */
   .card .card-content {
     padding: 15px;
   }
 
-  /* Estilos para o rodapé da card */
   .card .card-footer {
     padding: 15px;
     background-color: #f0f0f0;
     text-align: center;
   }
 
-  /* Estilos para o ícone de upload */
   .border-upload img {
     width: 50px;
     height: 50px;
     margin-bottom: 10px;
   }
 
-  /* Estilos para o texto do ícone de upload */
   .border-upload p {
     font-size: 14px;
     margin-bottom: 10px;
   }
 
-  /* Estilos para o botão de upload */
   .input-label-file {
     font-size: 16px;
     padding: 10px;
     border-radius: 5px;
-    /* Define um raio de borda mais suave */
     transition: background-color 0.3s ease;
-    /* Adiciona uma transição suave para o background */
   }
 
-  /* Estilos para o botão de upload ao passar o mouse */
   .input-label-file:hover {
     background-color: #0056b3;
-    /* Define a cor de fundo ao passar o mouse */
     color: white;
-    /* Define a cor do texto ao passar o mouse */
+  }
+
+  .footer-buttons {
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .button {
+    margin: 0 5px;
   }
 
 
 }
 </style>
-
-<script setup>
-const socialLinks = [
-  {
-    name: 'Instagram',
-    url: 'https://twitter.com/ceceliacreates',
-    icon: 'instagram'
-  },
-  {
-    name: 'Linkedin',
-    url: 'https://twitter.com/ceceliacreates',
-    icon: 'linkedin'
-  },
-  {
-    name: 'Youtube',
-    url: 'https://www.youtube.com/@ceceliacreates',
-    icon: 'youtube'
-  },
-  {
-    name: 'Pinterest',
-    url: 'https://twitter.com/ceceliacreates',
-    icon: 'pinterest'
-  },
-  {
-    name: 'Twitter',
-    url: 'https://www.youtube.com/@ceceliacreates',
-    icon: 'twitter'
-  },
-  {
-    name: 'Facebook',
-    url: 'https://www.youtube.com/@ceceliacreates',
-    icon: 'facebook'
-  },
-];
-</script>

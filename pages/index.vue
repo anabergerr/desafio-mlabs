@@ -1,18 +1,19 @@
 <template>
-  <Header profilePicture="url-da-imagem-de-perfil.jpg" logo="url-do-logo.png" />
-  <main class="content">
-    <img src="/assets/img/vetor-posts.png" alt="Imagem Central" class="center-image" />
-    <button class="schedule-button">Agendar Post</button>
-  </main>
+  <div class="page-container">
+    <main class="content">
+      <img src="/assets/img/vetor-posts.png" alt="Imagem Central" class="center-image" />
+      <a href="/agendar">
+        <button class="schedule-button">Agendar Post</button>
+      </a>
+    </main>
+  </div>
 </template>
 
-
 <style scoped>
-html,
-body,
-#app {
-  height: 100%;
-  margin: 0;
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .content {
@@ -20,16 +21,16 @@ body,
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: calc(100vh - 60px);
-  /* Ajuste a altura conforme a altura do Header */
+  flex: 1;
   text-align: center;
+  height: calc(100vh - 100px);
 }
 
 .center-image {
   width: 300px;
-  /* Ajuste o tamanho conforme necessário */
   height: auto;
-  margin-bottom: 20px;
+  margin: 20px 0;
+  /* Margem superior e inferior */
 }
 
 .schedule-button {

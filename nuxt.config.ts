@@ -15,4 +15,3 @@ export default defineNuxtConfig({
     '@/assets/css/global.css'
   ]
 })
-
