@@ -40,11 +40,17 @@ const selectedLink = ref<number | null>(null)
 const inputValueData = ref('');
 const inputValueHours = ref('');
 const router = useRouter();
+const showPreview = ref(true)
 
 
 const selectLink = (index: number) => {
-  selectedLink.value = index
-}
+  selectedLink.value = index;
+  if (index === 0 || index == 1) { // Se o botão clicado for do Instagram
+    showPreview.value = false; // Esconde a imagem
+  } else {
+    showPreview.value = true; // Mostra a imagem
+  }
+};
 
 
 const agendar = () => {
@@ -55,6 +61,10 @@ const agendar = () => {
 const dateFormat = 'YYYY-MM-DD';
 const timeFormat = 'HH:mm';
 
+
+const hidePreview = () => {
+  showPreview.value = false;
+};
 
 </script>
 
@@ -117,7 +127,12 @@ const timeFormat = 'HH:mm';
         <card class="card card-text" :spanText="'Visualização do post'">
           <div id="waiting-post" class="waiting-content">
             <p class="text">Aguardando conteúdo. Informe os canais e as mídias desejadas para visualização.</p>
-            <img src="assets/img/post-preview.svg" alt="vetor ilustrativo de postagem">
+            <img src="assets/img/post-preview.svg" alt="vetor ilustrativo de postagem" v-if="showPreview" />
+            <Post username="Anselmo Carlos" date="06 de Setembro" content="Aqui vai o texto descritivo desse post"
+              image="https://example.com/image.jpg" comments="5" iconSocial="linkedin" v-if="selectedLink === 1" />
+
+            <Post username="Anselmo Carlos" date="06 de Setembro" content="Aqui vai o texto descritivo desse post"
+              image="https://example.com/image.jpg" comments="5" iconSocial="instagram" v-if="selectedLink === 0" />
           </div>
         </card>
       </section>
@@ -306,6 +321,9 @@ const timeFormat = 'HH:mm';
 
 .waiting-content {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .waiting-content p {
