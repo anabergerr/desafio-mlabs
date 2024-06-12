@@ -52,6 +52,9 @@ const agendar = () => {
   router.push('/agendamentos');
 };
 
+const dateFormat = 'YYYY-MM-DD';
+const timeFormat = 'HH:mm';
+
 
 </script>
 
@@ -75,7 +78,14 @@ const agendar = () => {
           </card>
           <card class="card card-data" :spanText="'Data de publicação'">
             <div class="data-input">
-
+              <div class="input-container">
+                <font-awesome-icon class="icon-calendar" :icon="['far', 'calendar']" />
+                <input type="date" v-model="inputValueData" :format="dateFormat" class="input-date" />
+              </div>
+              <div class="input-container">
+                <font-awesome-icon class="icon-clock" :icon="['far', 'clock']" />
+                <input type="time" v-model="inputValueHours" :format="timeFormat" class="input-time" />
+              </div>
             </div>
           </card>
         </div>
