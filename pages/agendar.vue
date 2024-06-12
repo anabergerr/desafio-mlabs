@@ -78,13 +78,15 @@ const timeFormat = 'HH:mm';
           </card>
           <card class="card card-data" :spanText="'Data de publicação'">
             <div class="data-input">
-              <div class="input-container">
-                <font-awesome-icon class="icon-calendar" :icon="['far', 'calendar']" />
-                <input type="date" v-model="inputValueData" :format="dateFormat" class="input-date" />
-              </div>
-              <div class="input-container">
-                <font-awesome-icon class="icon-clock" :icon="['far', 'clock']" />
-                <input type="time" v-model="inputValueHours" :format="timeFormat" class="input-time" />
+              <div class="input-group">
+                <div class="input-container">
+                  <font-awesome-icon class="icon-calendar" :icon="['far', 'calendar']" />
+                  <input type="date" v-model="inputValueData" :format="dateFormat" class="input-date" />
+                </div>
+                <div class="input-container">
+                  <font-awesome-icon class="icon-clock" :icon="['far', 'clock']" />
+                  <input type="time" v-model="inputValueHours" :format="timeFormat" class="input-time" />
+                </div>
               </div>
             </div>
           </card>
@@ -132,6 +134,41 @@ const timeFormat = 'HH:mm';
 </template>
 
 <style scoped>
+.data-input {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.input-date,
+.input-time {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  width: 100%;
+}
+
+/* Estilo para os icons */
+.icon-calendar,
+.icon-clock {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+
 .container {
   margin: 50px auto;
 
