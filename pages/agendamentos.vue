@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(agendamento, index) in agendamentos" :key="index">
+        <tr v-for="(agendamento, index) in agendamentosStore.agendamentos" :key="index">
           <td>
             <div class="social-icon">
               <font-awesome-icon :icon="['fab', agendamento.redeSocial]" />
@@ -39,49 +39,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { useAgendamentosStore } from '@/store/agendamentos';
 
-const agendamentos = ref([
-  {
-    redeSocial: 'instagram',
-    imagem: 'https://via.placeholder.com/150',
-    texto: 'Aqui vai o texto descritivo desse post',
-    data: '09/09/2020 às 14:45h',
-    linkPreview: '#',
-    status: 'Agendado',
-  },
-  {
-    redeSocial: 'linkedin',
-    imagem: 'https://via.placeholder.com/150',
-    texto: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.',
-    data: '08/09/2020 às 10:30h',
-    linkPreview: '#',
-    status: 'Postado',
-  },
-  {
-    redeSocial: 'linkedin',
-    imagem: 'https://via.placeholder.com/150',
-    texto: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.',
-    data: '07/09/2020 às 18:15h',
-    linkPreview: '#',
-    status: 'Postado',
-  },
-  {
-    redeSocial: 'linkedin',
-    imagem: 'https://via.placeholder.com/150',
-    texto: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.',
-    data: '06/09/2020 às 12:05h',
-    linkPreview: '#',
-    status: 'Postado com ressalvas',
-  },
-  {
-    redeSocial: 'instagram',
-    imagem: 'https://via.placeholder.com/150',
-    texto: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.',
-    data: '05/09/2020 às 15:10h',
-    linkPreview: '#',
-    status: 'Não aprovado',
-  },
-]);
+const agendamentosStore = useAgendamentosStore();
 
 const getStatusClass = (status: string) => {
   switch (status) {

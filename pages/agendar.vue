@@ -1,71 +1,49 @@
 <script setup lang="ts">
-
 import { ref } from 'vue';
-
+import { useRouter } from 'vue-router';
+import { useAgendamentosStore } from '@/store/agendamentos';
 
 const socialLinks = [
-  {
-    name: 'Instagram',
-    icon: 'instagram',
-    enabled: true,
-  },
-  {
-    name: 'Linkedin',
-    icon: 'linkedin',
-    enabled: true,
-  },
-  {
-    name: 'Youtube',
-    icon: 'youtube',
-    enabled: false,
-  },
-  {
-    name: 'Pinterest',
-    icon: 'pinterest',
-    enabled: false,
-  },
-  {
-    name: 'Twitter',
-    icon: 'twitter',
-    enabled: false,
-  },
-  {
-    name: 'Facebook',
-    icon: 'facebook',
-    enabled: false,
-  },
+  { name: 'Instagram', icon: 'instagram', enabled: true },
+  { name: 'Linkedin', icon: 'linkedin', enabled: true },
+  { name: 'Youtube', icon: 'youtube', enabled: false },
+  { name: 'Pinterest', icon: 'pinterest', enabled: false },
+  { name: 'Twitter', icon: 'twitter', enabled: false },
+  { name: 'Facebook', icon: 'facebook', enabled: false },
 ];
 
-const selectedLink = ref<number | null>(null)
+const selectedLink = ref<number | null>(null);
 const inputValueData = ref('');
 const inputValueHours = ref('');
 const router = useRouter();
-const showPreview = ref(true)
-
+const showPreview = ref(true);
+const agendamentosStore = useAgendamentosStore();
 
 const selectLink = (index: number) => {
   selectedLink.value = index;
-  if (index === 0 || index == 1) { // Se o botão clicado for do Instagram
-    showPreview.value = false; // Esconde a imagem
-  } else {
-    showPreview.value = true; // Mostra a imagem
-  }
+  showPreview.value = index !== 0 && index !== 1;
 };
 
-
 const agendar = () => {
+  const agendamento = {
+    redeSocial: socialLinks[selectedLink.value!].icon,
+    imagem: 'https://via.placeholder.com/150', // Aqui você deve pegar a URL da imagem real.
+    texto: 'Aqui vai o texto descritivo desse post',
+    data: `${inputValueData.value} às ${inputValueHours.value}`,
+    linkPreview: '#',
+    status: 'Agendado',
+  };
+
+  // agendamentosStore.clearAgendamentos(); // Limpa os agendamentos antigos
+  agendamentosStore.addAgendamento(agendamento); // Adiciona o novo agendamento
+
   alert('Agendamento realizado com sucesso!');
   router.push('/agendamentos');
 };
 
 const dateFormat = 'YYYY-MM-DD';
 const timeFormat = 'HH:mm';
-
-
-const hidePreview = () => {
-  showPreview.value = false;
-};
-
+const hidePreview = () => showPreview.value = false;
 </script>
 
 

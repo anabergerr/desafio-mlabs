@@ -1,6 +1,6 @@
 <template>
-  <section class="containter-principal" :style="{ height: dynamicHeight }">
-    <div class="text-post-container">
+  <section class="containter-principal">
+    <div class=" text-post-container">
       <span class="text-span" for="post-text">{{ spanText }}</span>
     </div>
     <slot></slot>
@@ -17,12 +17,6 @@ export default {
       type: String,
       required: true
     },
-    computed: {
-      dynamicHeight() {
-        return 'fit-content';
-      }
-    }
-
   }
 }
 </script>
