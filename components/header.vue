@@ -1,53 +1,55 @@
 <template>
   <header class="header">
-    <div class="logo">
-      <img src="/assets/img/logo.png" alt="Logo" />
+    <div class="profile-container">
+      <img src="/assets/img/avatar.png" alt="Profile Picture" class="profile-pic" />
+      <span class="profile-name">Aselmo Carlos</span>
     </div>
-    <div class="profile-pic">
-      <img src="/assets/img/avatar.png" alt="Profile Picture" />
+    <div class="logo-container">
+      <img src="/assets/img/logo.png" alt="Logo" class="logo" />
     </div>
   </header>
 </template>
 
-<script>
-export default {
-  name: 'Header',
-  props: {
-    profilePicture: {
-      type: String,
-      required: true
-    },
-    logo: {
-      type: String,
-      required: true
-    }
-  }
-}
-</script>
 
 <style scoped>
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
-  background-color: #f8f9fa;
+  justify-content: space-between;
+  background-color: #fff;
+  height: 80px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.logo-container,
+.profile-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 50px;
 }
 
 .profile-pic {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  overflow: hidden;
+  margin-right: 10px;
 }
 
-.profile-pic img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.profile-name {
+  font-size: 16px;
+  font-weight: bold;
 }
 
-.logo img {
-  height: 50px;
+@media (max-width: 768px) {
+  .logo-container {
+    display: none;
+  }
 }
 </style>
