@@ -100,6 +100,13 @@ const hidePreview = () => showPreview.value = false;
             </div>
           </div>
         </card>
+
+        <div class="mob-card-text">
+          <p>Vizualizar post</p>
+        </div>
+
+
+
       </section>
       <section class="right-column">
         <card class="card card-text" :spanText="'Visualização do post'">
@@ -174,6 +181,10 @@ const hidePreview = () => showPreview.value = false;
 
 .card {
   background-color: white;
+}
+
+.mob-card-text  {
+  display: none;
 }
 
 .container .left-column,
@@ -257,6 +268,7 @@ const hidePreview = () => showPreview.value = false;
 
 .card-upload {
   margin-top: 35px;
+  margin-bottom: 3rem;
 }
 
 .content-upload-image {
@@ -270,7 +282,6 @@ const hidePreview = () => showPreview.value = false;
   width: 100%;
   height: 178px;
   border: 1px dashed #ccc;
-  /* Cor da borda do upload */
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -287,9 +298,7 @@ const hidePreview = () => showPreview.value = false;
   width: 181px;
   height: 36px;
   color: #007bff;
-  /* Cor do botão de upload */
   border: 1px solid #007bff;
-  /* Cor da borda do botão de upload */
   margin-top: 25px;
   cursor: pointer;
   display: flex;
@@ -309,7 +318,6 @@ const hidePreview = () => showPreview.value = false;
   text-align: center;
 }
 
-/* Remova a largura fixa da card-text */
 .card-text {
   display: flex;
   flex-direction: column;
@@ -581,6 +589,15 @@ const hidePreview = () => showPreview.value = false;
 
   .button {
     margin: 0 5px;
+  }
+
+  .mob-card-text {
+    display: flex;
+    margin-bottom: 50px;
+    justify-content: center;
+    align-items: center;
+    background-color: #F2994A;
+    border-radius: 30px;
   }
 
 
