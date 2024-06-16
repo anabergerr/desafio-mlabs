@@ -42,7 +42,7 @@ defineProps({
     required: true
   },
   comments: {
-    type: Number,
+    type: String,
     default: 0
   },
   iconSocial: {

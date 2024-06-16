@@ -1,5 +1,3 @@
-// store/agendamentos.ts
-// stores/agendamentos.ts
 import { defineStore } from 'pinia';
 
 export const useAgendamentosStore = defineStore('agendamentos', {
@@ -12,6 +10,7 @@ export const useAgendamentosStore = defineStore('agendamentos', {
       linkPreview: string;
       status: string;
     }>,
+    newAgendamentos: [],
   }),
   actions: {
     addAgendamento(agendamento: {
@@ -23,6 +22,15 @@ export const useAgendamentosStore = defineStore('agendamentos', {
       status: string;
     }) {
       this.agendamentos.push(agendamento);
+    },
+    async fetchAgendamentos(path: string) {
+      try {
+        const response = await fetch(path)
+        this.newAgendamentos = await response.json()
+        console.log(this.newAgendamentos);
+      } catch (error) {
+        console.error('Erro ao buscar agendamentos:', error);
+      }
     },
   },
 });

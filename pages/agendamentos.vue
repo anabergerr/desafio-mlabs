@@ -37,7 +37,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { useAgendamentosStore } from '@/store/agendamentos';
 
@@ -57,6 +56,13 @@ const getStatusClass = (status: string) => {
       return '';
   }
 };
+
+onMounted(() => {
+  agendamentosStore.fetchAgendamentos("/schedules.json")
+  agendamentosStore.fetchAgendamentos("/schedules-status.json")
+  agendamentosStore.fetchAgendamentos("/social-networks.json")
+})
+
 </script>
 
 <style scoped>
