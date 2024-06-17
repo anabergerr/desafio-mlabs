@@ -15,6 +15,7 @@ const socialLinks = [
 const selectedLink = ref<number | null>(null);
 const inputValueData = ref('');
 const inputValueHours = ref('');
+const inputText = ref('');
 const router = useRouter();
 const showPreview = ref(true);
 const agendamentosStore = useAgendamentosStore();
@@ -25,46 +26,53 @@ const selectLink = (index: number) => {
 };
 
 const agendar = () => {
+  const status = agendamentosStore.statuses.find(st => st.name === 'Agendado');
+
   const agendamento = {
-    redeSocial: socialLinks[selectedLink.value!].icon,
-    imagem: 'https://via.placeholder.com/150', // Aqui você deve pegar a URL da imagem real.
-    texto: 'Aqui vai o texto descritivo desse post',
-    data: `${inputValueData.value} às ${inputValueHours.value}`,
-    linkPreview: '#',
-    status: 'Agendado',
+    id: Date.now(), // Usando timestamp como ID temporário
+    social_networks: [{
+      id: 3,
+      name: 'Instagram',
+      icon: 'instagram',
+      status: 'enabled'
+    }],
+    media: 'https://via.placeholder.com/150',
+    text: inputText.value,
+    publication_date: `${inputValueData.value} às ${inputValueHours.value}`,
+    status: {
+      id: 3,
+      name: 'Não aprovado',
+      color: '#F2C94C'
+    }
   };
 
-  // agendamentosStore.clearAgendamentos(); // Limpa os agendamentos antigos
-  agendamentosStore.addAgendamento(agendamento); // Adiciona o novo agendamento
-
+  agendamentosStore.addAgendamento(agendamento);
   alert('Agendamento realizado com sucesso!');
   router.push('/agendamentos');
 };
 
 const dateFormat = 'YYYY-MM-DD';
 const timeFormat = 'HH:mm';
+
 const hidePreview = () => showPreview.value = false;
 </script>
-
-
 
 <template>
   <div class="principal">
     <main class="container">
       <section class="left-column">
         <div class="card-container-top">
-          <card class="card card-social" :spanText="'Redes Sociais'">
+          <Card class="card card-social" :spanText="'Redes Sociais'">
             <div>
               <div id="icons">
                 <button v-for="(link, index) in socialLinks" :key="link.name" class="link-social"
-                  :class="{ active: selectedLink === index }" :disabled="!link.enabled" @click="selectLink(index)"
-                  :target="link.enabled ? 'blank' : ''">
+                  :class="{ active: selectedLink === index }" :disabled="!link.enabled" @click="selectLink(index)">
                   <font-awesome-icon class="icon-social" :icon="['fab', link.icon]" />
                 </button>
               </div>
             </div>
-          </card>
-          <card class="card card-data" :spanText="'Data de publicação'">
+          </Card>
+          <Card class="card card-data" :spanText="'Data de publicação'">
             <div class="data-input">
               <div class="input-group">
                 <div class="input-container">
@@ -79,14 +87,15 @@ const hidePreview = () => showPreview.value = false;
             </div>
           </card>
         </div>
-        <card class="card card-post" :spanText="'Texto do post'">
+        <Card class="card card-post" :spanText="'Texto do post'">
           <div>
             <form action="" class="text-aterea-form">
-              <textarea id="myTextarea" rows="5" placeholder="Aqui vai o texto descritivo desse post"></textarea>
+              <textarea id="myTextarea" v-model="inputText" rows="5"
+                placeholder="Aqui vai o texto descritivo desse post"></textarea>
             </form>
           </div>
-        </card>
-        <card class="card card-upload" :spanText="'Upload de imagem'">
+        </Card>
+        <Card class="card card-upload" :spanText="'Upload de imagem'">
           <div>
             <div class="content-upload-image">
               <div class="border-upload">
@@ -99,27 +108,23 @@ const hidePreview = () => showPreview.value = false;
               </div>
             </div>
           </div>
-        </card>
+        </Card>
 
         <div class="mob-card-text">
           <p>Vizualizar post</p>
         </div>
-
-
-
       </section>
       <section class="right-column">
-        <card class="card card-text" :spanText="'Visualização do post'">
+        <Card class="card card-text" :spanText="'Visualização do post'">
           <div id="waiting-post" class="waiting-content">
             <p class="text">Aguardando conteúdo. Informe os canais e as mídias desejadas para visualização.</p>
             <img src="assets/img/post-preview.svg" alt="vetor ilustrativo de postagem" v-if="showPreview" />
             <Post username="Anselmo Carlos" date="06 de Setembro" content="Aqui vai o texto descritivo desse post"
               image="https://example.com/image.jpg" comments="5" iconSocial="linkedin" v-if="selectedLink === 1" />
-
             <Post username="Anselmo Carlos" date="06 de Setembro" content="Aqui vai o texto descritivo desse post"
               image="https://example.com/image.jpg" comments="5" iconSocial="instagram" v-if="selectedLink === 0" />
           </div>
-        </card>
+        </Card>
       </section>
     </main>
   </div>
@@ -161,7 +166,6 @@ const hidePreview = () => showPreview.value = false;
   width: 100%;
 }
 
-/* Estilo para os icons */
 .icon-calendar,
 .icon-clock {
   font-size: 1.2rem;
