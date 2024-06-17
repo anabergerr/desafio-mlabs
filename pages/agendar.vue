@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAgendamentosStore } from '@/store/agendamentos';
+import { fetchSocial } from '/api/social-fetch.ts'
 
 const socialLinks = [
   { name: 'Instagram', icon: 'instagram', enabled: true },
@@ -22,6 +23,7 @@ const agendamentosStore = useAgendamentosStore();
 
 const buttonDisable = computed(() => inputValueHours.value.trim() === '' || inputValueData.value.trim() === '' || selectedLink === null)
 
+console.log('logggg', await fetchSocial());
 
 const selectLink = (index: number) => {
   selectedLink.value = index;
