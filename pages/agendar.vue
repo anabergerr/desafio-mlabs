@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAgendamentosStore } from '@/store/agendamentos';
 
@@ -19,6 +19,9 @@ const inputText = ref('');
 const router = useRouter();
 const showPreview = ref(true);
 const agendamentosStore = useAgendamentosStore();
+
+const buttonDisable = computed(() => inputValueHours.value.trim() === '' || inputValueData.value.trim() === '' || selectedLink === null)
+
 
 const selectLink = (index: number) => {
   selectedLink.value = index;
@@ -132,8 +135,7 @@ const hidePreview = () => showPreview.value = false;
     <div class="footer-buttons">
       <button class="button cancel-button">Cancelar</button>
       <button class="button draft-button">Salvar Rascunho</button>
-      <button :disabled="inputValueHours.trim() === '' || inputValueData.trim() === '' || selectedLink === null"
-        class="button schedule-button" @click="agendar">Agendar</button>
+      <button :disabled="buttonDisable" class="button schedule-button" @click="agendar">Agendar</button>
     </div>
   </footer>
 </template>
