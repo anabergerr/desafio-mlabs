@@ -87,7 +87,6 @@ export const useAgendamentosStore = defineStore('agendamentos', {
 
       } catch (error) {
         console.error('Erro ao buscar dados:', error);
-        // Tratar o erro de forma apropriada, se necessário
       }
     }
   },
