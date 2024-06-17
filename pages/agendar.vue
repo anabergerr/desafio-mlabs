@@ -1,18 +1,12 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAgendamentosStore } from '@/store/agendamentos';
+import { fetchSocial } from '/api/social-fetch.ts'
 
-const socialLinks = [
-  { name: 'Instagram', icon: 'instagram', enabled: true },
-  { name: 'Linkedin', icon: 'linkedin', enabled: true },
-  { name: 'Youtube', icon: 'youtube', enabled: false },
-  { name: 'Pinterest', icon: 'pinterest', enabled: false },
-  { name: 'Twitter', icon: 'twitter', enabled: false },
-  { name: 'Facebook', icon: 'facebook', enabled: false },
-];
+const socialLinks = await fetchSocial()
 
-const selectedLink = ref<number | null>(null);
+const selectedLinks = ref([]);
 const inputValueData = ref('');
 const inputValueHours = ref('');
 const inputText = ref('');
@@ -20,19 +14,23 @@ const router = useRouter();
 const showPreview = ref(true);
 const agendamentosStore = useAgendamentosStore();
 
-const buttonDisable = computed(() => inputValueHours.value.trim() === '' || inputValueData.value.trim() === '' || selectedLink === null)
+const buttonDisable = computed(() => inputValueHours.value.trim() === '' || inputValueData.value.trim() === '' || selectedLinks.length === 0)
 
 
 const selectLink = (index: number) => {
-  selectedLink.value = index;
-  showPreview.value = index !== 0 && index !== 1;
+  if (selectedLinks.value.includes(index)) {
+    selectedLinks.value = selectedLinks.value.filter(i => i !== index);
+  } else {
+    selectedLinks.value.push(index);
+  }
+  showPreview.value = selectedLinks.value.length > 0;
 };
 
 const agendar = () => {
   const status = agendamentosStore.statuses.find(st => st.name === 'Agendado');
 
   const agendamento = {
-    id: Date.now(), // Usando timestamp como ID temporário
+    id: Math.floor(Math.random() * (10 - 4 + 1)) + 4,
     social_networks: [{
       id: 3,
       name: 'Instagram',
@@ -58,6 +56,25 @@ const dateFormat = 'YYYY-MM-DD';
 const timeFormat = 'HH:mm';
 
 const hidePreview = () => showPreview.value = false;
+
+
+
+const selectEmoji = (emoji: string) => {
+  const textarea = document.getElementById('myTextarea') as HTMLTextAreaElement;
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const text = inputText.value;
+  inputText.value = text.slice(0, start) + emoji + text.slice(end);
+
+  // Coloca o foco de volta no textarea e ajusta a posição do cursor
+  nextTick(() => {
+    textarea.focus();
+    textarea.selectionStart = textarea.selectionEnd = start + emoji.length;
+  });
+};
+
+
+
 </script>
 
 <template>
@@ -69,13 +86,15 @@ const hidePreview = () => showPreview.value = false;
             <div>
               <div id="icons">
                 <button v-for="(link, index) in socialLinks" :key="link.name" class="link-social"
-                  :class="{ active: selectedLink === index }" :disabled="!link.enabled" @click="selectLink(index)">
+                  :class="{ active: selectedLinks.includes(index) }" :disabled="!link.enabled"
+                  @click="selectLink(index)">
                   <font-awesome-icon class="icon-social" :icon="['fab', link.icon]" />
                 </button>
               </div>
             </div>
           </Card>
           <Card class="card card-data" :spanText="'Data de publicação'">
+
             <div class="data-input">
               <div class="input-group">
                 <div class="input-container">
@@ -91,10 +110,16 @@ const hidePreview = () => showPreview.value = false;
           </card>
         </div>
         <Card class="card card-post" :spanText="'Texto do post'">
-          <div>
+          <NuxtEmoji @on-select="selectEmoji">
+            <template v-slot:button>
+              <button class="emoji-button" type="button">😁</button>
+            </template>
+          </NuxtEmoji>
+          <div class="textarea-container">
             <form action="" class="text-aterea-form">
               <textarea id="myTextarea" v-model="inputText" rows="5"
-                placeholder="Aqui vai o texto descritivo desse post"></textarea>
+                placeholder="Aqui vai o texto descritivo desse post">
+    </textarea>
             </form>
           </div>
         </Card>
@@ -119,13 +144,17 @@ const hidePreview = () => showPreview.value = false;
       </section>
       <section class="right-column">
         <Card class="card card-text" :spanText="'Visualização do post'">
-          <div id="waiting-post" class="waiting-content">
-            <p class="text">Aguardando conteúdo. Informe os canais e as mídias desejadas para visualização.</p>
-            <img src="assets/img/post-preview.svg" alt="vetor ilustrativo de postagem" v-if="showPreview" />
+          <div id="waiting-post" class="waiting-content" :class="{ 'scroll-horizontal': selectedLinks.length > 1 }">
+            <p class="text" v-if="selectedLinks.length === 0">Aguardando conteúdo. Informe os canais e as mídias
+              desejadas para visualização.</p>
+            <img src="assets/img/post-preview.svg" alt="vetor ilustrativo de postagem"
+              v-if="showPreview && selectedLinks.length === 0" />
             <Post username="Anselmo Carlos" date="06 de Setembro" content="Aqui vai o texto descritivo desse post"
-              image="https://example.com/image.jpg" comments="5" iconSocial="linkedin" v-if="selectedLink === 1" />
+              image="https://example.com/image.jpg" comments="5" iconSocial="linkedin"
+              v-if="selectedLinks.includes(1)" />
             <Post username="Anselmo Carlos" date="06 de Setembro" content="Aqui vai o texto descritivo desse post"
-              image="https://example.com/image.jpg" comments="5" iconSocial="instagram" v-if="selectedLink === 0" />
+              image="https://example.com/image.jpg" comments="5" iconSocial="instagram"
+              v-if="selectedLinks.includes(2)" />
           </div>
         </Card>
       </section>
@@ -146,6 +175,18 @@ const hidePreview = () => showPreview.value = false;
   justify-content: space-around;
   padding: 10px;
 
+}
+
+.emoji-button {
+  background: none;
+  border: none;
+  margin-left: 12px;
+}
+
+.waiting-content.scroll-horizontal {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
 }
 
 .input-group {
@@ -463,6 +504,8 @@ const hidePreview = () => showPreview.value = false;
     cursor: text;
     resize: vertical;
   }
+
+
 
   .card-upload {
     margin-top: 15px;
