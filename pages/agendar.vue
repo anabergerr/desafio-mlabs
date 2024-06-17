@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAgendamentosStore } from '@/store/agendamentos';
 import { fetchSocial } from '/api/social-fetch.ts'
@@ -56,6 +56,25 @@ const dateFormat = 'YYYY-MM-DD';
 const timeFormat = 'HH:mm';
 
 const hidePreview = () => showPreview.value = false;
+
+
+
+const selectEmoji = (emoji: string) => {
+  const textarea = document.getElementById('myTextarea') as HTMLTextAreaElement;
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const text = inputText.value;
+  inputText.value = text.slice(0, start) + emoji + text.slice(end);
+
+  // Coloca o foco de volta no textarea e ajusta a posição do cursor
+  nextTick(() => {
+    textarea.focus();
+    textarea.selectionStart = textarea.selectionEnd = start + emoji.length;
+  });
+};
+
+
+
 </script>
 
 <template>
@@ -75,6 +94,7 @@ const hidePreview = () => showPreview.value = false;
             </div>
           </Card>
           <Card class="card card-data" :spanText="'Data de publicação'">
+
             <div class="data-input">
               <div class="input-group">
                 <div class="input-container">
@@ -90,10 +110,16 @@ const hidePreview = () => showPreview.value = false;
           </card>
         </div>
         <Card class="card card-post" :spanText="'Texto do post'">
-          <div>
+          <NuxtEmoji @on-select="selectEmoji">
+            <template v-slot:button>
+              <button class="emoji-button" type="button">😁</button>
+            </template>
+          </NuxtEmoji>
+          <div class="textarea-container">
             <form action="" class="text-aterea-form">
               <textarea id="myTextarea" v-model="inputText" rows="5"
-                placeholder="Aqui vai o texto descritivo desse post"></textarea>
+                placeholder="Aqui vai o texto descritivo desse post">
+    </textarea>
             </form>
           </div>
         </Card>
@@ -149,6 +175,12 @@ const hidePreview = () => showPreview.value = false;
   justify-content: space-around;
   padding: 10px;
 
+}
+
+.emoji-button {
+  background: none;
+  border: none;
+  margin-left: 12px;
 }
 
 .waiting-content.scroll-horizontal {
@@ -472,6 +504,8 @@ const hidePreview = () => showPreview.value = false;
     cursor: text;
     resize: vertical;
   }
+
+
 
   .card-upload {
     margin-top: 15px;
