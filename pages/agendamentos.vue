@@ -8,27 +8,29 @@
           <th>Mídia</th>
           <th>Texto</th>
           <th>Data</th>
-          <th>Ações</th>
           <th>Status</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(agendamento, index) in agendamentosStore.agendamentos" :key="index">
+        <tr v-for="(agendamento, index) in agendamentosStore.agendamentos" :key="agendamento.id">
           <td>
-            <div class="social-icon">
-              <font-awesome-icon :icon="['fab', agendamento.redeSocial]" />
+            <div :class="network.icon" v-for="network in agendamento.social_networks" :key="network.id"
+              class="social-icon">
+              <font-awesome-icon :icon="['fab', network.icon]" />
             </div>
           </td>
-          <td><img :src="agendamento.imagem" alt="Mídia"></td>
-          <td>{{ agendamento.texto }}</td>
-          <td>{{ agendamento.data }}</td>
+          <!-- <td>
+            <ul>
+              <li >
+                <i :class="network.icon"></i> {{ network.name }}
+              </li>
+            </ul>
+          </td> -->
+          <td><img :src="agendamento.media" alt="Mídia" /></td>
+          <td>{{ agendamento.text }}</td>
+          <td>{{ agendamento.publication_date }}</td>
           <td>
-            <a :href="agendamento.linkPreview" class="preview-button">Preview</a>
-          </td>
-          <td>
-            <div :class="getStatusClass(agendamento.status)">
-              {{ agendamento.status }}
-            </div>
+            <!-- <a :href="agendamento.linkPreview" class="preview-button">Preview</a> -->
           </td>
         </tr>
       </tbody>
@@ -58,9 +60,7 @@ const getStatusClass = (status: string) => {
 };
 
 onMounted(() => {
-  agendamentosStore.fetchAgendamentos("/schedules.json")
-  agendamentosStore.fetchAgendamentos("/schedules-status.json")
-  agendamentosStore.fetchAgendamentos("/social-networks.json")
+  agendamentosStore.fetchData()
 })
 
 </script>

@@ -183,7 +183,7 @@ const hidePreview = () => showPreview.value = false;
   background-color: white;
 }
 
-.mob-card-text  {
+.mob-card-text {
   display: none;
 }
 

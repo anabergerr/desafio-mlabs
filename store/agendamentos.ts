@@ -1,37 +1,74 @@
 import { defineStore } from 'pinia';
 
+
+interface SocialNetwork {
+  id: number;
+  name: string;
+  icon: string;
+  status: string;
+}
+
+interface Status {
+  id: number;
+  name: string;
+  color: string;
+}
+
+interface Agendamento {
+  id: number;
+  social_networks: SocialNetwork[];
+  media: string;
+  text: string;
+  publication_date: string;
+  status: Status;
+}
+
 export const useAgendamentosStore = defineStore('agendamentos', {
   state: () => ({
-    agendamentos: [] as Array<{
-      redeSocial: string;
-      imagem: string;
-      texto: string;
-      data: string;
-      linkPreview: string;
-      status: string;
-    }>,
-    newAgendamentos: [],
+    agendamentos: [] as Agendamento[],
+    socialNetworks: [] as SocialNetwork[],
+    statuses: [] as Status[]
   }),
   actions: {
     addAgendamento(agendamento: {
-      redeSocial: string;
-      imagem: string;
-      texto: string;
-      data: string;
-      linkPreview: string;
-      status: string;
+      id: Number,
+      // social_network_key: Array,
+      media: String,
+      text: String,
+      publication_date: String,
+      status_key: Number
     }) {
       this.agendamentos.push(agendamento);
     },
-    async fetchAgendamentos(path: string) {
+
+    async fetchData() {
       try {
-        const response = await fetch(path)
-        this.newAgendamentos = await response.json()
-        console.log(this.newAgendamentos);
+        const [agendamentosResponse, socialNetworksResponse, statusesResponse] = await Promise.all([
+          fetch('/schedules.json'),
+          fetch('/social-networks.json'),
+          fetch('/schedules-status.json')
+        ]);
+
+        const agendamentosData = await agendamentosResponse.json();
+        const socialNetworksData = await socialNetworksResponse.json();
+        const statusesData = await statusesResponse.json();
+
+        this.socialNetworks = socialNetworksData.data;
+        this.statuses = statusesData.data;
+
+        this.agendamentos = agendamentosData.data.map((agendamento: any) => ({
+          id: agendamento.id,
+          social_networks: agendamento.social_network_key.map((id: number) =>
+            this.socialNetworks.find(sn => sn.id === id) as SocialNetwork
+          ),
+          media: agendamento.media,
+          text: agendamento.text,
+          publication_date: agendamento.publication_date,
+          status: this.statuses.find(status => status.id === agendamento.status_key) as Status
+        }));
       } catch (error) {
-        console.error('Erro ao buscar agendamentos:', error);
+        console.error('Erro ao buscar dados:', error);
       }
-    },
+    }
   },
 });
-
