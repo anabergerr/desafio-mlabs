@@ -44,4 +44,3 @@ yarn dev
 bun run dev
 ```
 
-👨‍💻 **Desenvolvido por**: Ana com Amor & Carinho
