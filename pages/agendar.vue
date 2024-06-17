@@ -42,7 +42,7 @@ const agendar = () => {
     publication_date: `${inputValueData.value} às ${inputValueHours.value}`,
     status: {
       id: 3,
-      name: 'Não aprovado',
+      name: 'Agendado',
       color: '#F2C94C'
     }
   };
