@@ -1,16 +1,16 @@
-# Nuxt 3  - Desafio Mlabs
+# 🚀 Nuxt 3 - Desafio Mlabs
 
-Link para acessar o projeto: https://desafio-mlabs.vercel.app/
+🔗 **Link para acessar o projeto**: [desafio-mlabs.vercel.app](https://desafio-mlabs.vercel.app/)
 
-## O que foi utilizado: 
+## 🛠️ O que foi utilizado:
 
 - Nuxt.js 3
-- Typescript
-- Pinia 
+- TypeScript
+- Pinia
 
-## Setup
+## 📦 Setup
 
-- Instalar as dependencias do projeto
+1. Instale as dependências do projeto:
 
 ```bash
 # npm
@@ -26,7 +26,9 @@ yarn install
 bun install
 ```
 
-## Server
+## 🖥️ Server
+
+2. Inicie o servidor de desenvolvimento:
 
 ```bash
 # npm
@@ -42,4 +44,4 @@ yarn dev
 bun run dev
 ```
 
-
+👨‍💻 **Desenvolvido por**: Ana com Amor & Carinho
