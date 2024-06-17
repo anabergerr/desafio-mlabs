@@ -14,24 +14,19 @@
       <tbody>
         <tr v-for="(agendamento, index) in agendamentosStore.agendamentos" :key="agendamento.id">
           <td>
-            <div :class="network.icon" v-for="network in agendamento.social_networks" :key="network.id"
-              class="social-icon">
-              <font-awesome-icon :icon="['fab', network.icon]" />
-            </div>
+            <template v-if="agendamento.social_networks && agendamento.social_networks.length">
+              <div v-for="network in agendamento.social_networks" :key="network.id" class="social-icon">
+                <font-awesome-icon :icon="['fab', network.icon]" />
+              </div>
+            </template>
+            <template v-else>
+              <div class="social-icon">Rede social não especificada</div>
+            </template>
           </td>
-          <!-- <td>
-            <ul>
-              <li >
-                <i :class="network.icon"></i> {{ network.name }}
-              </li>
-            </ul>
-          </td> -->
           <td><img :src="agendamento.media" alt="Mídia" /></td>
           <td>{{ agendamento.text }}</td>
           <td>{{ agendamento.publication_date }}</td>
-          <td>
-            <!-- <a :href="agendamento.linkPreview" class="preview-button">Preview</a> -->
-          </td>
+          <td>{{ agendamento.status.name }}</td>
         </tr>
       </tbody>
     </table>
@@ -44,26 +39,13 @@ import { useAgendamentosStore } from '@/store/agendamentos';
 
 const agendamentosStore = useAgendamentosStore();
 
-const getStatusClass = (status: string) => {
-  switch (status) {
-    case 'Agendado':
-      return 'status-agendado';
-    case 'Postado':
-      return 'status-postado';
-    case 'Postado com ressalvas':
-      return 'status-ressalvas';
-    case 'Não aprovado':
-      return 'status-nao-aprovado';
-    default:
-      return '';
-  }
-};
-
 onMounted(() => {
-  agendamentosStore.fetchData()
+  agendamentosStore.fetchData();
 })
 
+
 </script>
+
 
 <style scoped>
 .agendamento-container {

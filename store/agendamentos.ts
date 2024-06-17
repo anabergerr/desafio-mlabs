@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 
-
 interface SocialNetwork {
   id: number;
   name: string;
@@ -27,18 +26,12 @@ export const useAgendamentosStore = defineStore('agendamentos', {
   state: () => ({
     agendamentos: [] as Agendamento[],
     socialNetworks: [] as SocialNetwork[],
-    statuses: [] as Status[]
+    statuses: [] as Status[],
+    novosAgendamentos: [] as Agendamento[],
   }),
   actions: {
-    addAgendamento(agendamento: {
-      id: Number,
-      // social_network_key: Array,
-      media: String,
-      text: String,
-      publication_date: String,
-      status_key: Number
-    }) {
-      this.agendamentos.push(agendamento);
+    addAgendamento(agendamento: Agendamento) {
+      this.novosAgendamentos.push(agendamento);
     },
 
     async fetchData() {
@@ -56,7 +49,7 @@ export const useAgendamentosStore = defineStore('agendamentos', {
         this.socialNetworks = socialNetworksData.data;
         this.statuses = statusesData.data;
 
-        this.agendamentos = agendamentosData.data.map((agendamento: any) => ({
+        const fetchedAgendamentos = agendamentosData.data.map((agendamento: any) => ({
           id: agendamento.id,
           social_networks: agendamento.social_network_key.map((id: number) =>
             this.socialNetworks.find(sn => sn.id === id) as SocialNetwork
@@ -66,6 +59,8 @@ export const useAgendamentosStore = defineStore('agendamentos', {
           publication_date: agendamento.publication_date,
           status: this.statuses.find(status => status.id === agendamento.status_key) as Status
         }));
+        this.agendamentos = [...fetchedAgendamentos, ...this.novosAgendamentos];
+
       } catch (error) {
         console.error('Erro ao buscar dados:', error);
       }
