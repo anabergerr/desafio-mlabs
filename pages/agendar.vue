@@ -66,14 +66,11 @@ const selectEmoji = (emoji: string) => {
   const text = inputText.value;
   inputText.value = text.slice(0, start) + emoji + text.slice(end);
 
-  // Coloca o foco de volta no textarea e ajusta a posição do cursor
   nextTick(() => {
     textarea.focus();
     textarea.selectionStart = textarea.selectionEnd = start + emoji.length;
   });
 };
-
-
 
 </script>
 
