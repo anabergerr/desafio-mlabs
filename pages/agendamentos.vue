@@ -1,6 +1,9 @@
 <template>
   <div class="agendamento-container">
-    <h2>Listagem de agendamento</h2>
+    <div class="header-agendamentos">
+      <h2>Listagem de agendamento</h2>
+      <a href="/agendar"> Agendar </a>
+    </div>
     <div class="table-responsive">
       <table>
         <thead>
@@ -53,6 +56,20 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.header-agendamentos {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-agendamentos a {
+  text-decoration: none;
+  font-size: 16px;
+  background-color: #F2994A;
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+}
+
 .agendamento-container {
   margin-top: 80px;
   padding: 20px;
