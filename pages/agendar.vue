@@ -32,7 +32,7 @@ const agendar = () => {
   const status = agendamentosStore.statuses.find(st => st.name === 'Agendado');
 
   const agendamento = {
-    id: Date.now(), // Usando timestamp como ID temporário
+    id: Math.floor(Math.random() * (10 - 4 + 1)) + 4,
     social_networks: [{
       id: 3,
       name: 'Instagram',

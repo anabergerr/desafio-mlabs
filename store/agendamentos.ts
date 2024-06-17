@@ -27,11 +27,24 @@ export const useAgendamentosStore = defineStore('agendamentos', {
     agendamentos: [] as Agendamento[],
     socialNetworks: [] as SocialNetwork[],
     statuses: [] as Status[],
-    novosAgendamentos: [] as Agendamento[],
   }),
   actions: {
     addAgendamento(agendamento: Agendamento) {
-      this.novosAgendamentos.push(agendamento);
+      this.agendamentos.push(agendamento);
+      this.saveAgendamento(agendamento);
+    },
+
+    saveAgendamento(agendamento: Agendamento) {
+      let agendamentos: Agendamento[] = JSON.parse(localStorage.getItem('agendamentos') || '[]');
+      agendamentos.push(agendamento);
+      localStorage.setItem('agendamentos', JSON.stringify(agendamentos));
+    },
+
+    loadAgendamentos() {
+      const storedAgendamentos = localStorage.getItem('agendamentos');
+      if (storedAgendamentos) {
+        this.agendamentos = JSON.parse(storedAgendamentos);
+      }
     },
 
     async fetchData() {
@@ -42,28 +55,41 @@ export const useAgendamentosStore = defineStore('agendamentos', {
           fetch('/schedules-status.json')
         ]);
 
-        const agendamentosData = await agendamentosResponse.json();
-        const socialNetworksData = await socialNetworksResponse.json();
-        const statusesData = await statusesResponse.json();
+        const agendamentosData: { data: any[] } = await agendamentosResponse.json();
+        const socialNetworksData: { data: SocialNetwork[] } = await socialNetworksResponse.json();
+        const statusesData: { data: Status[] } = await statusesResponse.json();
 
         this.socialNetworks = socialNetworksData.data;
         this.statuses = statusesData.data;
 
-        const fetchedAgendamentos = agendamentosData.data.map((agendamento: any) => ({
-          id: agendamento.id,
-          social_networks: agendamento.social_network_key.map((id: number) =>
+        this.loadAgendamentos();
+
+        const fetchedAgendamentos: Agendamento[] = agendamentosData.data.map((agendamentoData: any) => ({
+          id: agendamentoData.id,
+          social_networks: agendamentoData.social_network_key.map((id: number) =>
             this.socialNetworks.find(sn => sn.id === id) as SocialNetwork
           ),
-          media: agendamento.media,
-          text: agendamento.text,
-          publication_date: agendamento.publication_date,
-          status: this.statuses.find(status => status.id === agendamento.status_key) as Status
+          media: agendamentoData.media,
+          text: agendamentoData.text,
+          publication_date: agendamentoData.publication_date,
+          status: this.statuses.find(status => status.id === agendamentoData.status_key) as Status
         }));
-        this.agendamentos = [...fetchedAgendamentos, ...this.novosAgendamentos];
+
+        const newAgendamentos = fetchedAgendamentos.filter((fetched: Agendamento) =>
+          !this.agendamentos.some(existing => existing.id === fetched.id)
+        );
+
+        this.agendamentos = [...this.agendamentos, ...newAgendamentos];
+
+        newAgendamentos.forEach(newAgendamento => {
+          this.saveAgendamento(newAgendamento);
+        });
 
       } catch (error) {
         console.error('Erro ao buscar dados:', error);
+        // Tratar o erro de forma apropriada, se necessário
       }
     }
   },
 });
+
