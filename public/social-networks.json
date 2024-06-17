@@ -3,38 +3,44 @@
     {
       "id": 1,
       "name": "Facebook",
-      "icon": "facebook-f",
-      "status": "disabled"
+      "icon": "facebook",
+      "status": "disabled",
+      "enabled": false
     },
     {
       "id": 2,
       "name": "Linkedin",
       "icon": "linkedin",
-      "status": "enabled"
+      "status": "enabled",
+      "enabled": true
     },
     {
       "id": 3,
       "name": "Instagram",
       "icon": "instagram",
-      "status": "enabled"
+      "status": "enabled",
+      "enabled": true
     },
     {
       "id": 4,
       "name": "Youtube",
       "icon": "youtube",
-      "status": "disabled"
+      "status": "disabled",
+      "enabled": false
     },
     {
       "id": 5,
       "name": "Pinterest",
-      "icon": "pinterest-p",
-      "status": "disabled"
+      "icon": "pinterest",
+      "status": "disabled",
+      "enabled": false
     },
     {
       "id": 6,
       "name": "Twitter",
       "icon": "twitter",
-      "status": "disabled"
+      "status": "disabled",
+      "enabled": false
     }
   ]
 }
